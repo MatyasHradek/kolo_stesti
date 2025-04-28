@@ -53,24 +53,30 @@ function drawRotatedWheel(angle) {
 }
 
 function spinWheel() {
-  const rotation = 1440; // Přesně 4 celé otočky (4 * 360°)
-  const duration = 4000; // Délka animace v milisekundách
+  const plavbaIndex = 0; // "Plavba" je na indexu 0
+  const plavbaAngle = plavbaIndex * segAngle; // Úhel, kde začíná "Plavba"
+  const fullRotations = 4; // Počet plných otoček
+  const finalRotation = fullRotations * 360 + (360 - plavbaAngle); // Přesné zastavení s "Plavba" nahoře
+
+  const duration = 4000;
   const start = performance.now();
 
   function animate(now) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
-    const easeOut = 1 - Math.pow(1 - progress, 3); // Plynulé zpomalení
-    currentAngle = rotation * easeOut;
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    currentAngle = finalRotation * easeOut;
     drawRotatedWheel(currentAngle % 360);
 
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      result.textContent = `Výsledek: Plavba`; // Výsledek bude vždy "Plavba"
+      result.textContent = `Výsledek: Plavba`;
     }
   }
 
+  requestAnimationFrame(animate);
+}
   requestAnimationFrame(animate);
 }
 
