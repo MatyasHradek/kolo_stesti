@@ -2,16 +2,47 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kolo �t�st�</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Kolo štěstí</title>
+  <style>
+    #wheel {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 5px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 50px auto;
+      font-size: 20px;
+      text-align: center;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-    <h1 id="title">Kolo �t�st�</h1>
-    <canvas id="wheel" width="500" height="500"></canvas>
-    <div id="result">V�sledek: </div>
-    <button id="spin">Zato�it</button>
-    <script src="script.js"></script>
+  <div id="wheel">Kolo štěstí</div>
+  <button onclick="spinWheel()">Roztočit!</button>
+
+  <script>
+    function spinWheel() {
+      const options = ["Plavba", "Výlet", "Film", "Oběd", "Káva"];
+      const result = "Plavba"; // Tato hodnota bude vždy výsledkem
+
+      const wheel = document.getElementById("wheel");
+      wheel.textContent = "Točím...";
+      
+      // Simulace krátkého čekání před "výherou"
+      setTimeout(() => {
+        wheel.textContent = result;
+        alert(`Vyhráli jste: ${result}!`);
+      }, 2000);
+    }
+  </script>
 </body>
 </html>
