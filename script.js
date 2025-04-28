@@ -53,7 +53,10 @@ function drawRotatedWheel(angle) {
 }
 
 function spinWheel() {
-  let rotation = Math.random() * 360 + 1440; // Náhodné otočení o více než 1440°
+  const plavbaIndex = segments.indexOf("Plavba"); // Najdeme index "Plavba"
+  const targetAngle = 360 - (segAngle * plavbaIndex) - segAngle / 2; // Úhel, kde se zastaví na "Plavba"
+  
+  let rotation = targetAngle + 1440; // Otáčení o více než 1440° (4 celé otočky)
   const duration = 4000;
   const start = performance.now();
 
