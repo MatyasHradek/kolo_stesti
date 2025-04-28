@@ -1,6 +1,4 @@
-
 <!DOCTYPE html>
-<meta charset="UTF-8">
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
@@ -17,12 +15,15 @@
       margin: 50px auto;
       font-size: 20px;
       text-align: center;
+      background-color: #FFD700; /* Zlatá barva kola */
+      transition: transform 4s ease-out; /* Plynulý efekt pro rotaci */
     }
     button {
       display: block;
       margin: 20px auto;
       padding: 10px 20px;
       font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -37,12 +38,18 @@
 
       const wheel = document.getElementById("wheel");
       wheel.textContent = "Točím...";
-      
-      // Simulace krátkého čekání před "výherou"
+
+      // Vytvoření náhodného úhlu pro rotaci
+      const rotation = Math.floor(Math.random() * 360) + 1440; // Min. 1440° pro několik otáček
+
+      // Přidání třídy pro rotaci
+      wheel.style.transform = `rotate(${rotation}deg)`;
+
+      // Po dokončení animace nastavíme výsledek
       setTimeout(() => {
         wheel.textContent = result;
         alert(`Vyhráli jste: ${result}!`);
-      }, 2000);
+      }, 4000); // Délka animace (4 sekundy)
     }
   </script>
 </body>
