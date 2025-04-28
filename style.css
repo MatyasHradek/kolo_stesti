@@ -1,21 +1,33 @@
-
-/* Støedìní nadpisu */
 body {
-    display: flex;
-    justify-content: center;   /* Horizontální støedìní */
-    align-items: center;       /* Vertikální støedìní */
-    height: 100vh;             /* Výška celé obrazovky */
-    margin: 0;
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
 
-#title {
-    text-align: center;         /* Ujistíme se, že text je vycentrován */
-    font-size: 3rem;            /* Velikost písma nadpisu */
-    color: #333;                /* Barva textu */
-    font-weight: bold;          /* Tuèný text */
+h1 {
+  color: #333;
+}
+
+.wheel-container {
+  display: inline-block;
+  position: relative;
+  margin-top: 50px;
 }
 
 canvas {
-    margin-top: 20px;           /* Oddìlení kola od nadpisu */
+  border-radius: 50%;
+  border: 5px solid #000;
+}
+
+button {
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
 }
