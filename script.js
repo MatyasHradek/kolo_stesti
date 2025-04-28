@@ -9,7 +9,7 @@ const segAngle = 360 / segments.length;
 
 let currentAngle = 0;
 
-// Funkce pro vykreslení kola štěstí
+// Function to draw the wheel
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
     const angle = segAngle * i * Math.PI / 180;
@@ -24,11 +24,11 @@ function drawWheel() {
     ctx.fillStyle = "black";
     ctx.font = "16px Arial";
     ctx.textAlign = "center";
-    ctx.fillText(segments[i], 150, 10); // Zajištění správného umístění textu
+    ctx.fillText(segments[i], 150, 10);
     ctx.restore();
   }
 
-  // Přidání ukazatele
+  // Draw the pointer
   ctx.beginPath();
   ctx.moveTo(250, 10);
   ctx.lineTo(240, 50);
@@ -38,23 +38,25 @@ function drawWheel() {
   ctx.fill();
 }
 
-// Funkce pro otočení kola
+// Function to spin the wheel
 function spinWheel() {
-  const rotation = 1440; // Minimálně 1440° pro několik otáček (můžeme to zvyšovat, aby bylo točení zajímavější)
-  const duration = 4000; // Délka animace (4 sekundy)
-  const start = performance.now();
+  const rotations = 1440; // Enough rotations to ensure randomness
+  const duration = 4000; // Animation duration (ms)
+  const targetAngle = segAngle * 0; // Landing on "Plavba" (index 0)
+  const totalRotation = rotations + targetAngle; // Total angle calculation
+  const startTime = performance.now();
 
   function animate(now) {
-    const elapsed = now - start;
+    const elapsed = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
     const easeOut = 1 - Math.pow(1 - progress, 3);
-    currentAngle = rotation * easeOut;
+    currentAngle = totalRotation * easeOut;
 
-    // Kreslení kola s otáčením
-    ctx.clearRect(0, 0, 500, 500);
+    // Rotate the wheel during animation
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
     ctx.translate(250, 250);
-    ctx.rotate(currentAngle * Math.PI / 180);
+    ctx.rotate((currentAngle % 360) * Math.PI / 180);
     ctx.translate(-250, -250);
     drawWheel();
     ctx.restore();
@@ -62,8 +64,7 @@ function spinWheel() {
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      // Po skončení animace vždy ukázat "Plavba"
-      result.textContent = `Výsledek: Plavba`;
+      result.textContent = `Výsledek: ${segments[0]}`; // Always show "Plavba"
     }
   }
 
