@@ -62,7 +62,8 @@ function spinWheel() {
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      result.textContent = `Výsledek: Plavba`; // Výsledek bude vždy "Plavba"
+      // Výsledek bude vždy "Plavba"
+      result.textContent = `Výsledek: Plavba`;
     }
   }
 
