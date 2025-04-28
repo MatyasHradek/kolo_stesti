@@ -3,12 +3,13 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["Plavba", "Výhra", "Zkus to znovu", "Sleva 10%", "Výhra 2x", "Nic", "Sleva 20%"];
-const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
+const segments = ["Plavba", "Výlet", "Film", "Oběd", "Káva"];
+const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4"];
 const segAngle = 360 / segments.length;
 
 let currentAngle = 0;
 
+// Funkce pro vykreslení kola štěstí
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
     const angle = segAngle * i * Math.PI / 180;
@@ -37,19 +38,10 @@ function drawWheel() {
   ctx.fill();
 }
 
-function drawRotatedWheel(angle) {
-  ctx.clearRect(0, 0, 500, 500);
-  ctx.save();
-  ctx.translate(250, 250);
-  ctx.rotate(angle * Math.PI / 180);
-  ctx.translate(-250, -250);
-  drawWheel();
-  ctx.restore();
-}
-
+// Funkce pro otočení kola
 function spinWheel() {
-  let rotation = Math.random() * 360 + 1440; // Náhodné otočení o více než 1440°
-  const duration = 4000;
+  const rotation = 1440; // Minimálně 1440° pro několik otáček (můžeme to zvyšovat, aby bylo točení zajímavější)
+  const duration = 4000; // Délka animace (4 sekundy)
   const start = performance.now();
 
   function animate(now) {
@@ -57,12 +49,20 @@ function spinWheel() {
     const progress = Math.min(elapsed / duration, 1);
     const easeOut = 1 - Math.pow(1 - progress, 3);
     currentAngle = rotation * easeOut;
-    drawRotatedWheel(currentAngle);
+
+    // Kreslení kola s otáčením
+    ctx.clearRect(0, 0, 500, 500);
+    ctx.save();
+    ctx.translate(250, 250);
+    ctx.rotate(currentAngle * Math.PI / 180);
+    ctx.translate(-250, -250);
+    drawWheel();
+    ctx.restore();
 
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      // Výsledek bude vždy "Plavba"
+      // Po skončení animace vždy ukázat "Plavba"
       result.textContent = `Výsledek: Plavba`;
     }
   }
