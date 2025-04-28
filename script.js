@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["Plavba", "Výhra", "Zkus to znovu", "Sleva 10%", "Výhra 2x", "Nic", "Sleva 20%"];
+const segments = ["Plavba", "VÃ½hra", "Zkus to znovu", "Sleva 10%", "VÃ½hra 2x", "Nic", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length;
 
@@ -29,7 +29,7 @@ function drawWheel() {
 }
 
 function spinWheel() {
-  let rotation = Math.random() * 360 + 1440; // náhodné otoèení o 1440° až 1800°
+  let rotation = Math.random() * 360 + 1440; // nÃ¡hodnÃ© otoÃ¨enÃ­ o 1440Â° aÅ¾ 1800Â°
   const duration = 4000;
   const start = performance.now();
 
@@ -43,8 +43,8 @@ function spinWheel() {
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      // Výsledek bude vždy "Plavba"
-      result.textContent = `Výsledek: Plavba`;
+      // VÃ½sledek bude vÅ¾dy "Plavba"
+      result.textContent = `VÃ½sledek: Plavba`;
     }
   }
 
@@ -63,3 +63,30 @@ function drawRotatedWheel(angle) {
 
 drawWheel();
 spinBtn.addEventListener("click", spinWheel);
+
+function drawWheel() {
+  for (let i = 0; i < segments.length; i++) {
+    const angle = segAngle * i * Math.PI / 180;
+    ctx.beginPath();
+    ctx.moveTo(250, 250);
+    ctx.arc(250, 250, 240, angle, angle + segAngle * Math.PI / 180);
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    ctx.save();
+    ctx.translate(250, 250);
+    ctx.rotate(angle + segAngle * Math.PI / 360);
+    ctx.fillStyle = "black";
+    ctx.font = "16px Arial";
+    ctx.fillText(segments[i], 100, 0);
+    ctx.restore();
+  }
+
+  // PÅ™idÃ¡nÃ­ ukazatele
+  ctx.beginPath();
+  ctx.moveTo(250, 10);
+  ctx.lineTo(240, 50);
+  ctx.lineTo(260, 50);
+  ctx.closePath();
+  ctx.fillStyle = "red";
+  ctx.fill();
+}
