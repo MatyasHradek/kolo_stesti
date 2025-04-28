@@ -1,0 +1,21 @@
+
+/* Støedìní nadpisu */
+body {
+    display: flex;
+    justify-content: center;   /* Horizontální støedìní */
+    align-items: center;       /* Vertikální støedìní */
+    height: 100vh;             /* Výška celé obrazovky */
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#title {
+    text-align: center;         /* Ujistíme se, že text je vycentrován */
+    font-size: 3rem;            /* Velikost písma nadpisu */
+    color: #333;                /* Barva textu */
+    font-weight: bold;          /* Tuèný text */
+}
+
+canvas {
+    margin-top: 20px;           /* Oddìlení kola od nadpisu */
+}
