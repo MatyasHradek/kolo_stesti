@@ -3,54 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Kolo štěstí</title>
-  <style>
-    #wheel {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      border: 5px solid #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 50px auto;
-      font-size: 20px;
-      text-align: center;
-      background-color: #FFD700; /* Zlatá barva kola */
-      transition: transform 4s ease-out; /* Plynulý efekt pro rotaci */
-    }
-    button {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="wheel">Kolo štěstí</div>
-  <button onclick="spinWheel()">Roztočit!</button>
+  <h1>Kolo štěstí</h1>
+  <div class="wheel-container">
+    <canvas id="wheel" width="500" height="500"></canvas>
+    <button id="spin">Roztočit</button>
+  </div>
+  <p id="result"></p>
 
-  <script>
-    function spinWheel() {
-      const options = ["Plavba", "Výlet", "Film", "Oběd", "Káva"];
-      const result = "Plavba"; // Tato hodnota bude vždy výsledkem
-
-      const wheel = document.getElementById("wheel");
-      wheel.textContent = "Točím...";
-
-      // Vytvoření náhodného úhlu pro rotaci
-      const rotation = Math.floor(Math.random() * 360) + 1440; // Min. 1440° pro několik otáček
-
-      // Přidání třídy pro rotaci
-      wheel.style.transform = `rotate(${rotation}deg)`;
-
-      // Po dokončení animace nastavíme výsledek
-      setTimeout(() => {
-        wheel.textContent = result;
-        alert(`Vyhráli jste: ${result}!`);
-      }, 4000); // Délka animace (4 sekundy)
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
