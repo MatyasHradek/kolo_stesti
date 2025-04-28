@@ -1,4 +1,3 @@
-
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
@@ -23,13 +22,33 @@ function drawWheel() {
     ctx.rotate(angle + segAngle * Math.PI / 360);
     ctx.fillStyle = "black";
     ctx.font = "16px Arial";
-    ctx.fillText(segments[i], 100, 0);
+    ctx.textAlign = "center";
+    ctx.fillText(segments[i], 150, 10); // Zajištění správného umístění textu
     ctx.restore();
   }
+
+  // Přidání ukazatele
+  ctx.beginPath();
+  ctx.moveTo(250, 10);
+  ctx.lineTo(240, 50);
+  ctx.lineTo(260, 50);
+  ctx.closePath();
+  ctx.fillStyle = "red";
+  ctx.fill();
+}
+
+function drawRotatedWheel(angle) {
+  ctx.clearRect(0, 0, 500, 500);
+  ctx.save();
+  ctx.translate(250, 250);
+  ctx.rotate(angle * Math.PI / 180);
+  ctx.translate(-250, -250);
+  drawWheel();
+  ctx.restore();
 }
 
 function spinWheel() {
-  let rotation = Math.random() * 360 + 1440; // náhodné otoèení o 1440° až 1800°
+  let rotation = Math.random() * 360 + 1440; // Náhodné otočení o více než 1440°
   const duration = 4000;
   const start = performance.now();
 
@@ -43,59 +62,12 @@ function spinWheel() {
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      // Výsledek bude vždy "Plavba"
-      result.textContent = `Výsledek: Plavba`;
+      result.textContent = `Výsledek: Plavba`; // Výsledek bude vždy "Plavba"
     }
   }
 
   requestAnimationFrame(animate);
 }
 
-function drawRotatedWheel(angle) {
-  ctx.clearRect(0, 0, 500, 500);
-  ctx.save();
-  ctx.translate(250, 250);
-  ctx.rotate(angle * Math.PI / 180);
-  ctx.translate(-250, -250);
-  drawWheel();
-  ctx.restore();
-
-  // Přidání ukazatele na vrchol kola
-  ctx.beginPath();
-  ctx.moveTo(250, 10);
-  ctx.lineTo(240, 50);
-  ctx.lineTo(260, 50);
-  ctx.closePath();
-  ctx.fillStyle = "red";
-  ctx.fill();
-}
-
 drawWheel();
 spinBtn.addEventListener("click", spinWheel);
-
-function drawWheel() {
-  for (let i = 0; i < segments.length; i++) {
-    const angle = segAngle * i * Math.PI / 180;
-    ctx.beginPath();
-    ctx.moveTo(250, 250);
-    ctx.arc(250, 250, 240, angle, angle + segAngle * Math.PI / 180);
-    ctx.fillStyle = colors[i];
-    ctx.fill();
-    ctx.save();
-    ctx.translate(250, 250);
-    ctx.rotate(angle + segAngle * Math.PI / 360);
-    ctx.fillStyle = "black";
-    ctx.font = "16px Arial";
-    ctx.fillText(segments[i], 100, 0);
-    ctx.restore();
-  }
-
-  // Přidání ukazatele
-  ctx.beginPath();
-  ctx.moveTo(250, 10);
-  ctx.lineTo(240, 50);
-  ctx.lineTo(260, 50);
-  ctx.closePath();
-  ctx.fillStyle = "red";
-  ctx.fill();
-}
