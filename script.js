@@ -59,6 +59,15 @@ function drawRotatedWheel(angle) {
   ctx.translate(-250, -250);
   drawWheel();
   ctx.restore();
+
+  // Přidání ukazatele na vrchol kola
+  ctx.beginPath();
+  ctx.moveTo(250, 10);
+  ctx.lineTo(240, 50);
+  ctx.lineTo(260, 50);
+  ctx.closePath();
+  ctx.fillStyle = "red";
+  ctx.fill();
 }
 
 drawWheel();
