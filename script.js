@@ -3,11 +3,11 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["Plavba", "Výhra", "Zkus to znovu", "Sleva 10%", "Prostě něco", "Nic", "Sleva 20%"];
+const segments = ["Plavba", "Výhra", "Zkus to znovu", "Sleva 10%", "Výhra 2x", "Nic", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length; // Úhel každého segmentu
 
-let currentAngle = 0;
+let currentAngle = 0; // Kolo začne od úhlu 0, kde je "Plavba" nahoře
 
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
@@ -53,12 +53,8 @@ function drawRotatedWheel(angle) {
 }
 
 function spinWheel() {
-  const plavbaIndex = segments.indexOf("Plavba"); // Index segmentu "Plavba"
-  const offsetToCenter = segAngle / 2; // Posun na střed segmentu
-  const targetAngle = (plavbaIndex * segAngle) + offsetToCenter; // Cílový úhel
-
-  let rotation = 1440 + targetAngle - (currentAngle % 360); // Přidání celých otoček a správného úhlu
-  const duration = 4000; // Délka animace
+  const rotation = 1440; // Přesně 4 celé otočky (4 * 360°)
+  const duration = 4000; // Délka animace v milisekundách
   const start = performance.now();
 
   function animate(now) {
@@ -78,6 +74,6 @@ function spinWheel() {
   requestAnimationFrame(animate);
 }
 
-// Inicializace kola s ukazatelem
+// Inicializace kola s pevnou ukazatelkou
 drawRotatedWheel(currentAngle);
 spinBtn.addEventListener("click", spinWheel);
