@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["Plavba", "Výhra", "Sajmi koule", "Sleva 10%", "Výhra 2x", "Nic", "Sleva 20%"];
+const segments = ["Plavba", "Výhra", "Zkus to znovu", "Sleva 10%", "Výhra 2x", "Nic", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length; // Úhel každého segmentu
 
@@ -57,7 +57,7 @@ function spinWheel() {
   const offsetToCenter = segAngle / 2; // Posun na střed segmentu
   const targetAngle = (plavbaIndex * segAngle) + offsetToCenter; // Cílový úhel
 
-  let rotation = 1440 - (currentAngle % 360) + targetAngle; // Otáčení o více než 4 kola
+  let rotation = 1440 + targetAngle - (currentAngle % 360); // Přidání celých otoček a správného úhlu
   const duration = 4000; // Délka animace
   const start = performance.now();
 
@@ -71,7 +71,7 @@ function spinWheel() {
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      result.textContent = `Výsledek: Plavba`; // Vždy zastaví na "Plavba"
+      result.textContent = `Výsledek: Plavba`; // Výsledek bude vždy "Plavba"
     }
   }
 
