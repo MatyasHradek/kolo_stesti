@@ -34,14 +34,13 @@ function drawWheel() {
 // Funkce pro vykreslení pevnému ukazatele
 function drawFixedPointer() {
   ctx.beginPath();
-  ctx.moveTo(250, 10);
-  ctx.lineTo(240, 50);
-  ctx.lineTo(260, 50);
-  ctx.closePath();
-  ctx.fillStyle = "red";
-  ctx.fill();
+  ctx.moveTo(250, 490); // Move to a position near the bottom of the canvas
+  ctx.lineTo(240, 450); // Draw the left side of the triangle
+  ctx.lineTo(260, 450); // Draw the right side of the triangle
+  ctx.closePath(); // Close the triangle shape
+  ctx.fillStyle = "red"; // Set the fill color
+  ctx.fill(); // Fill the triangle
 }
-
 // Funkce pro vykreslení rotujícího kola
 function drawRotatedWheel(angle) {
   ctx.clearRect(0, 0, 500, 500); // Vyčistíme canvas
@@ -120,7 +119,7 @@ function spinWheel() {
       // Spustíme animaci konfety na 3 sekundy
       confettiTimeout = setTimeout(() => {
         confetti = []; // Vymažeme konfety po 3 sekundách
-      }, 3000);
+      }, 5000);
     }
   }
 
@@ -136,6 +135,9 @@ function animateConfetti() {
 
 drawRotatedWheel(currentAngle); // Vykreslíme počáteční stav kola
 spinBtn.addEventListener("click", function () {
-  spinWheel();
-  animateConfetti(); // Spustí animaci konfety hned po kliknutí
-});
+spinWheel(); // Start spinning the wheel
+
+// Delay the confetti animation by 2 seconds
+setTimeout(() => {
+  animateConfetti();
+}, 2000); 
