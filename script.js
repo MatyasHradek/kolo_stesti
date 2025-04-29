@@ -8,6 +8,8 @@ const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB"
 const segAngle = 360 / segments.length;
 
 let currentAngle = 0;
+let confetti = []; // Pole pro konfety
+let confettiTimeout;
 
 // Funkce pro vykreslení kola štěstí
 function drawWheel() {
@@ -52,19 +54,44 @@ function drawRotatedWheel(angle) {
   drawFixedPointer(); // Vykreslení ukazatele
 }
 
-// Funkce pro vykreslení konfety
+// Funkce pro vykreslení konfety a jejich animace
 function drawConfetti() {
+  // Pro každou konfetu
+  for (let i = 0; i < confetti.length; i++) {
+    const particle = confetti[i];
+    // Posuneme konfetu
+    particle.x += particle.speedX;
+    particle.y += particle.speedY;
+    particle.size *= 0.98; // Zmenšení konfety (efekt vyblednutí)
+    
+    // Pořád se vykresluje konfeta, dokud není příliš malá
+    ctx.beginPath();
+    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+    ctx.fillStyle = particle.color;
+    ctx.fill();
+
+    // Pokud je konfeta příliš malá, odstraníme ji
+    if (particle.size < 1) {
+      confetti.splice(i, 1);
+      i--;
+    }
+  }
+}
+
+// Funkce pro generování náhodných konfety
+function generateConfetti() {
   const confettiCount = 100; // Počet konfety
   for (let i = 0; i < confettiCount; i++) {
-    const x = Math.random() * 500;
-    const y = Math.random() * 100;
-    const size = Math.random() * 5 + 5;
-    const color = `hsl(${Math.random() * 360}, 100%, 50%)`; // Náhodná barva
-
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI * 2);
-    ctx.fillStyle = color;
-    ctx.fill();
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 3 + 1;
+    confetti.push({
+      x: 250, // Počáteční pozice na středu
+      y: 250,
+      size: Math.random() * 5 + 5, // Velikost konfety
+      speedX: Math.cos(angle) * speed, // Rychlost pohybu X
+      speedY: Math.sin(angle) * speed, // Rychlost pohybu Y
+      color: `hsl(${Math.random() * 360}, 100%, 50%)` // Náhodná barva
+    });
   }
 }
 
@@ -89,7 +116,11 @@ function spinWheel() {
       requestAnimationFrame(animate);
     } else {
       result.textContent = "Výsledek: Plavba"; // Po dokončení animace zobrazíme výsledek
-      drawConfetti(); // Vykreslení konfety
+      generateConfetti(); // Generování konfety při dokončení animace
+      // Spustíme animaci konfety na 3 sekundy
+      confettiTimeout = setTimeout(() => {
+        confetti = []; // Vymažeme konfety po 3 sekundách
+      }, 3000);
     }
   }
 
