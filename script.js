@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["Nejedeš na tábor", "Výhra", "Zkus to znovu", "Prostě něco", "Výhra 2x", "Plavba", "Sleva 20%"];
+const segments = ["Plavba", "Výhra", "Zkus to znovu", "Prostě něco", "Výhra 2x", "Nejedeš na tábor", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length;
 
@@ -54,9 +54,9 @@ function spinWheel() {
   const start = performance.now();
 
   // Vždy chceme, aby výsledek byl "Plavba" (index 5)
-  const targetSegmentIndex = 5; // Index segmentu "Plavba"
-  const targetAngle = 360 - (segAngle * targetSegmentIndex + segAngle / 2); // Cílový úhel pro "Plavba"
-  const totalRotation = 1440 + targetAngle; // 4 otočky + správný úhel k segmentu "Plavba"
+  const targetSegmentIndex = 0; // Index segmentu "Plavba"
+const targetAngle = segAngle * targetSegmentIndex + segAngle / 2; // Cílový úhel pro "Plavba"
+const totalRotation = 1440 + targetAngle;
 
   function animate(now) {
     const elapsed = now - start;
