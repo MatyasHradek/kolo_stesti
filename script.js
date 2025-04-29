@@ -11,7 +11,6 @@ let currentAngle = 0;
 let confetti = [];
 let confettiTimeout;
 
-// Kreslení kola
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
     const angle = segAngle * i * Math.PI / 180;
@@ -31,18 +30,16 @@ function drawWheel() {
   }
 }
 
-// Ukazatel
 function drawFixedPointer() {
   ctx.beginPath();
-  ctx.moveTo(250, 490);
-  ctx.lineTo(240, 450);
-  ctx.lineTo(260, 450);
+  ctx.moveTo(250, 10);
+  ctx.lineTo(240, 50);
+  ctx.lineTo(260, 50);
   ctx.closePath();
   ctx.fillStyle = "red";
   ctx.fill();
 }
 
-// Kreslení rotovaného kola
 function drawRotatedWheel(angle) {
   ctx.clearRect(0, 0, 500, 500);
   ctx.save();
@@ -52,10 +49,26 @@ function drawRotatedWheel(angle) {
   drawWheel();
   ctx.restore();
   drawFixedPointer();
-  drawConfetti(); // NEZAPOMEŇ kreslit konfety při každém snímku
+  drawConfetti();
 }
 
-// Generování konfety
+function drawConfetti() {
+  for (let i = 0; i < confetti.length; i++) {
+    const particle = confetti[i];
+    particle.x += particle.speedX;
+    particle.y += particle.speedY;
+    particle.size *= 0.98;
+    ctx.beginPath();
+    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+    ctx.fillStyle = particle.color;
+    ctx.fill();
+    if (particle.size < 1) {
+      confetti.splice(i, 1);
+      i--;
+    }
+  }
+}
+
 function generateConfetti() {
   const confettiCount = 100;
   for (let i = 0; i < confettiCount; i++) {
@@ -72,39 +85,10 @@ function generateConfetti() {
   }
 }
 
-// Kreslení konfety (1 frame)
-function drawConfetti() {
-  for (let i = 0; i < confetti.length; i++) {
-    const particle = confetti[i];
-    particle.x += particle.speedX;
-    particle.y += particle.speedY;
-    particle.size *= 0.98;
-
-    ctx.beginPath();
-    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-    ctx.fillStyle = particle.color;
-    ctx.fill();
-
-    if (particle.size < 1) {
-      confetti.splice(i, 1);
-      i--;
-    }
-  }
-}
-
-// Animace konfety (smyčka)
-function animateConfetti() {
-  drawRotatedWheel(currentAngle % 360); // přepočítáme úhel a překreslíme
-  if (confetti.length > 0) {
-    requestAnimationFrame(animateConfetti);
-  }
-}
-
-// Spin animace
 function spinWheel() {
   const duration = 4000;
   const start = performance.now();
-  const targetSegmentIndex = 2; // "Plavba"
+  const targetSegmentIndex = 2;
   const targetAngle = segAngle * targetSegmentIndex + segAngle / 2;
   const totalRotation = 1440 + targetAngle;
 
@@ -113,20 +97,16 @@ function spinWheel() {
     const progress = Math.min(elapsed / duration, 1);
     const easeOut = 1 - Math.pow(1 - progress, 3);
     currentAngle = totalRotation * easeOut;
-
     drawRotatedWheel(currentAngle % 360);
 
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      result.textContent = "Výsledek: Plavba";
+      result.textContent = `Výsledek: ${segments[targetSegmentIndex]}`;
       generateConfetti();
-      animateConfetti();
-
-      clearTimeout(confettiTimeout);
       confettiTimeout = setTimeout(() => {
         confetti = [];
-      }, 5000);
+      }, 3000);
     }
   }
 
