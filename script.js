@@ -57,14 +57,13 @@ function drawRotatedWheel(angle) {
 
 // Function to draw and animate confetti
 function drawConfetti() {
-  // For each confetti particle
   for (let i = 0; i < confetti.length; i++) {
     const particle = confetti[i];
     // Move the confetti
     particle.x += particle.speedX;
     particle.y += particle.speedY;
     particle.size *= 0.98; // Shrink the confetti (fade effect)
-    
+
     // Draw the confetti
     ctx.beginPath();
     ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
@@ -118,7 +117,8 @@ function spinWheel() {
     } else {
       result.textContent = "Výsledek: Plavba"; // Show the result after animation
       generateConfetti(); // Generate confetti when animation ends
-      // Clear confetti after 3 seconds
+      // Clear confetti after a few seconds
+      clearTimeout(confettiTimeout); // Ensure no previous timeout interferes
       confettiTimeout = setTimeout(() => {
         confetti = []; // Clear confetti after 3 seconds
       }, 3000);
@@ -129,4 +129,4 @@ function spinWheel() {
 }
 
 drawRotatedWheel(currentAngle); // Draw the initial state of the wheel
-spinBtn.addEventListener("click", spinWheel); // Start the animation when the spin button is clicked
+spinBtn.addEventListener("click", spinWheel);
