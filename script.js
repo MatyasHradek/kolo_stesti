@@ -3,15 +3,15 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["NIC!!", "Výhra", "Plavba", "Prostě něco", "Výhra 8x", "Nejedeš na tábor", "Sleva 20%"];
+const segments = ["NIC!!", "Výhra", "Plavba", "Prostě něco", "Výhra 47", "Nejedeš na tábor", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length;
 
 let currentAngle = 0;
-let confetti = []; // Array for confetti
+let confetti = []; // Pole pro konfety
 let confettiTimeout;
 
-// Funkce pro vykreslení kola
+// Funkce pro vykreslení kola štěstí
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
     const angle = segAngle * i * Math.PI / 180;
@@ -46,18 +46,15 @@ function drawFixedPointer() {
 function drawRotatedWheel(angle) {
   ctx.clearRect(0, 0, 500, 500); // Vyčistíme canvas
   ctx.save();
-  ctx.translate(250, 250); // Přesuneme na střed
+  ctx.translate(250, 250); // Přesun na střed
   ctx.rotate(angle * Math.PI / 180); // Rotace kola
   ctx.translate(-250, -250);
-  drawWheel(); // Vykreslíme kolo
+  drawWheel(); // Vykreslení kola
   ctx.restore();
-  drawFixedPointer(); // Vykreslíme ukazatel
-  if (confetti.length > 0) {
-    drawConfetti(); // Vykreslíme konfety pouze po zastavení kola
-  }
+  drawFixedPointer(); // Vykreslení ukazatele
 }
 
-// Funkce pro vykreslení konfety
+// Funkce pro vykreslení konfety a jejich animace
 function drawConfetti() {
   // Pro každou konfetu
   for (let i = 0; i < confetti.length; i++) {
@@ -67,13 +64,13 @@ function drawConfetti() {
     particle.y += particle.speedY;
     particle.size *= 0.98; // Zmenšení konfety (efekt vyblednutí)
     
-    // Vykreslíme konfetu
+    // Pořád se vykresluje konfeta, dokud není příliš malá
     ctx.beginPath();
     ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
     ctx.fillStyle = particle.color;
     ctx.fill();
 
-    // Pokud konfeta zmizí, odstraníme ji
+    // Pokud je konfeta příliš malá, odstraníme ji
     if (particle.size < 1) {
       confetti.splice(i, 1);
       i--;
@@ -81,7 +78,7 @@ function drawConfetti() {
   }
 }
 
-// Funkce pro generování náhodné konfety
+// Funkce pro generování náhodných konfety
 function generateConfetti() {
   const confettiCount = 100; // Počet konfety
   for (let i = 0; i < confettiCount; i++) {
@@ -103,10 +100,10 @@ function spinWheel() {
   const duration = 4000; // Délka animace v milisekundách
   const start = performance.now();
 
-  // Chceme vždy výsledek "Plavba" (index 2)
-  const targetSegmentIndex = 2; // Index pro "Plavba"
+  // Vždy chceme, aby výsledek byl "Plavba" (index 2)
+  const targetSegmentIndex = 2; // Index segmentu "Plavba"
   const targetAngle = segAngle * targetSegmentIndex + segAngle / 2; // Cílový úhel pro "Plavba"
-  const totalRotation = 1440 + targetAngle; // 4 plné otočky + správný úhel pro "Plavba"
+  const totalRotation = 1440 + targetAngle; // 4 otočky + správný úhel k segmentu "Plavba"
 
   function animate(now) {
     const elapsed = now - start;
@@ -116,20 +113,29 @@ function spinWheel() {
     drawRotatedWheel(currentAngle % 360); // Rotace kola
 
     if (progress < 1) {
-      requestAnimationFrame(animate); // Pokračuj v animaci
+      requestAnimationFrame(animate);
     } else {
-      result.textContent = "Výsledek: Plavba"; // Zobrazíme výsledek
-      generateConfetti(); // Vytvoříme konfety po dokončení animace
-      // Po 3 sekundách vymažeme konfety
-      clearTimeout(confettiTimeout); // Ujistíme se, že žádný předchozí timeout nezasahuje
+      result.textContent = "Výsledek: Plavba"; // Po dokončení animace zobrazíme výsledek
+      generateConfetti(); // Generování konfety při dokončení animace
+      // Spustíme animaci konfety na 3 sekundy
       confettiTimeout = setTimeout(() => {
-        confetti = []; // Vymazání konfety
+        confetti = []; // Vymažeme konfety po 3 sekundách
       }, 3000);
     }
   }
 
-  requestAnimationFrame(animate); // Začneme animaci
+  requestAnimationFrame(animate); // Začátek animace
+}
+
+function animateConfetti() {
+  drawConfetti(); // Vykreslíme konfety na canvas
+  if (confetti.length > 0) {
+    requestAnimationFrame(animateConfetti); // Pokračuje v animaci konfety, dokud jsou konfety
+  }
 }
 
 drawRotatedWheel(currentAngle); // Vykreslíme počáteční stav kola
-spinBtn.addEventListener("click", spinWheel); 
+spinBtn.addEventListener("click", function () {
+  spinWheel();
+  animateConfetti(); // Spustí animaci konfety hned po kliknutí
+});
