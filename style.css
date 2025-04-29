@@ -31,3 +31,15 @@ p {
   font-weight: bold;
   margin-top: 20px;
 }
+.wheel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px; /* mezera mezi kolem a obrázkem */
+  flex-wrap: wrap;
+}
+
+.side-image {
+  width: 150px;
+  height: auto;
+}
