@@ -50,25 +50,25 @@ function drawRotatedWheel(angle) {
 }
 
 function spinWheel() {
-  const duration = 4000;
+  const duration = 4000; // Délka animace v milisekundách
   const start = performance.now();
 
-  // Vždy chceme, aby výsledek byl "Plavba" (index 0)
-  const targetSegmentIndex = 0;
-  const targetAngle = 360 - (segAngle * targetSegmentIndex + segAngle / 2);
+  // Vždy chceme, aby výsledek byl "Plavba" (index 5)
+  const targetSegmentIndex = 5; // Index segmentu "Plavba"
+  const targetAngle = 360 - (segAngle * targetSegmentIndex + segAngle / 2); // Cílový úhel pro "Plavba"
   const totalRotation = 1440 + targetAngle; // 4 otočky + správný úhel k segmentu "Plavba"
 
   function animate(now) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
     const easeOut = 1 - Math.pow(1 - progress, 3);
-    currentAngle = totalRotation * easeOut;
+    currentAngle = totalRotation * easeOut; // Animace zpomalení
     drawRotatedWheel(currentAngle % 360);
 
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      result.textContent = "Výsledek: Plavba";
+      result.textContent = "Výsledek: Plavba"; // Po dokončení animace zobrazíme "Plavba"
     }
   }
 
