@@ -8,9 +8,11 @@ h1 {
 }
 
 .wheel-container {
-  display: inline-block;
-  position: relative;
-  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px; /* mezera mezi kolem a obrázkem */
+  flex-wrap: wrap;
 }
 
 canvas {
@@ -30,13 +32,6 @@ p {
   font-size: 18px;
   font-weight: bold;
   margin-top: 20px;
-}
-.wheel-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px; /* mezera mezi kolem a obrázkem */
-  flex-wrap: wrap;
 }
 
 .side-image {
