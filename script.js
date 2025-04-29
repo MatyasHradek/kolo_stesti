@@ -90,7 +90,7 @@ function generateConfetti() {
       size: Math.random() * 5 + 5, // Size of the confetti
       speedX: Math.cos(angle) * speed, // Speed in X direction
       speedY: Math.sin(angle) * speed, // Speed in Y direction
-      color: `hsl(${Math.random() * 360}, 100%, 50%)` // Random color
+      color: hsl(${Math.random() * 360}, 100%, 50%) // Random color
     });
   }
 }
@@ -124,6 +124,47 @@ function spinWheel() {
       }, 3000);
     }
   }
+
+  requestAnimationFrame(animate); // Start the animation
+}
+
+drawRotatedWheel(currentAngle); // Draw the initial state of the wheel
+spinBtn.addEventListener("click", spinWheel);
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+.wheel-container {
+  display: inline-block;
+  position: relative;
+  margin-top: 50px;
+}
+
+canvas {
+  border-radius: 50%;
+  border: 5px solid #000;
+}
+
+button {
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
 
   requestAnimationFrame(animate); // Start the animation
 }
