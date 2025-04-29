@@ -34,9 +34,9 @@ function drawWheel() {
 // Ukazatel
 function drawFixedPointer() {
   ctx.beginPath();
-  ctx.moveTo(250, 490);
-  ctx.lineTo(240, 450);
-  ctx.lineTo(260, 450);
+  ctx.moveTo(250, 10);
+  ctx.lineTo(240, 50);
+  ctx.lineTo(260, 50);
   ctx.closePath();
   ctx.fillStyle = "red";
   ctx.fill();
