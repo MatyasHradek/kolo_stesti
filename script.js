@@ -5,26 +5,26 @@ const spinBtn = document.getElementById("spin");
 
 const segments = ["NIC!!", "Výhra", "Plavba", "Prostě něco", "Výhra 2x", "Nejedeš na tábor", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
-const segAngle = 360 / segments.length; // Úhel pro každý segment
+const segAngle = 360 / segments.length;
 
 let currentAngle = 0;
 
 // Funkce pro vykreslení kola štěstí
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
-    const angle = segAngle * i * Math.PI / 180; // Určíme úhel pro daný segment
+    const angle = segAngle * i * Math.PI / 180;
     ctx.beginPath();
-    ctx.moveTo(250, 250); // Začátek na středu
-    ctx.arc(250, 250, 240, angle, angle + segAngle * Math.PI / 180); // Vykreslíme segment
-    ctx.fillStyle = colors[i]; // Barva segmentu
+    ctx.moveTo(250, 250);
+    ctx.arc(250, 250, 240, angle, angle + segAngle * Math.PI / 180);
+    ctx.fillStyle = colors[i];
     ctx.fill();
     ctx.save();
-    ctx.translate(250, 250); // Přesun na střed
-    ctx.rotate(angle + segAngle * Math.PI / 360); // Rotace textu tak, aby byl správně zarovnán
+    ctx.translate(250, 250);
+    ctx.rotate(angle + segAngle * Math.PI / 360);
     ctx.fillStyle = "black";
     ctx.font = "16px Arial";
     ctx.textAlign = "center";
-    ctx.fillText(segments[i], 150, 10); // Umístění textu v segmentu
+    ctx.fillText(segments[i], 150, 10);
     ctx.restore();
   }
 }
@@ -52,6 +52,22 @@ function drawRotatedWheel(angle) {
   drawFixedPointer(); // Vykreslení ukazatele
 }
 
+// Funkce pro vykreslení konfety
+function drawConfetti() {
+  const confettiCount = 100; // Počet konfety
+  for (let i = 0; i < confettiCount; i++) {
+    const x = Math.random() * 500;
+    const y = Math.random() * 100;
+    const size = Math.random() * 5 + 5;
+    const color = `hsl(${Math.random() * 360}, 100%, 50%)`; // Náhodná barva
+
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+}
+
 // Funkce pro roztočení kola
 function spinWheel() {
   const duration = 4000; // Délka animace v milisekundách
@@ -73,6 +89,7 @@ function spinWheel() {
       requestAnimationFrame(animate);
     } else {
       result.textContent = "Výsledek: Plavba"; // Po dokončení animace zobrazíme výsledek
+      drawConfetti(); // Vykreslení konfety
     }
   }
 
