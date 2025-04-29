@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["NIC!!", "Výhra", "Plavba", "Prostě něco", "Prohral jsi trenky", "Nejedeš na tábor", "Sleva 20%"];
+const segments = ["NIC!!", "Pytel cementu", "Plavba", "Prostě něco", "Matfyz je super", "Nejedeš na tábor", "vstupní bonus 300"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length;
 
