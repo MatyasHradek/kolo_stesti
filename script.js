@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
-const segments = ["NIC!!", "Výhra", "Plavba", "Prostě něco", "Výhra 2x", "Nejedeš na tábor", "Sleva 20%"];
+const segments = ["NIC!!", "Výhra", "Plavba", "Prostě něco", "Výhra 8x", "Nejedeš na tábor", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length;
 
@@ -11,7 +11,7 @@ let currentAngle = 0;
 let confetti = []; // Array for confetti
 let confettiTimeout;
 
-// Function to draw the wheel
+// Funkce pro vykreslení kola
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
     const angle = segAngle * i * Math.PI / 180;
@@ -31,7 +31,7 @@ function drawWheel() {
   }
 }
 
-// Function to draw the fixed pointer
+// Funkce pro vykreslení pevnému ukazatele
 function drawFixedPointer() {
   ctx.beginPath();
   ctx.moveTo(250, 10);
@@ -42,35 +42,38 @@ function drawFixedPointer() {
   ctx.fill();
 }
 
-// Function to draw the rotating wheel
+// Funkce pro vykreslení rotujícího kola
 function drawRotatedWheel(angle) {
-  ctx.clearRect(0, 0, 500, 500); // Clear the canvas
+  ctx.clearRect(0, 0, 500, 500); // Vyčistíme canvas
   ctx.save();
-  ctx.translate(250, 250); // Move to the center
-  ctx.rotate(angle * Math.PI / 180); // Rotate the wheel
+  ctx.translate(250, 250); // Přesuneme na střed
+  ctx.rotate(angle * Math.PI / 180); // Rotace kola
   ctx.translate(-250, -250);
-  drawWheel(); // Draw the wheel
+  drawWheel(); // Vykreslíme kolo
   ctx.restore();
-  drawFixedPointer(); // Draw the pointer
-  drawConfetti(); // Draw confetti continuously during animation
+  drawFixedPointer(); // Vykreslíme ukazatel
+  if (confetti.length > 0) {
+    drawConfetti(); // Vykreslíme konfety pouze po zastavení kola
+  }
 }
 
-// Function to draw and animate confetti
+// Funkce pro vykreslení konfety
 function drawConfetti() {
+  // Pro každou konfetu
   for (let i = 0; i < confetti.length; i++) {
     const particle = confetti[i];
-    // Move the confetti
+    // Posuneme konfetu
     particle.x += particle.speedX;
     particle.y += particle.speedY;
-    particle.size *= 0.98; // Shrink the confetti (fade effect)
-
-    // Draw the confetti
+    particle.size *= 0.98; // Zmenšení konfety (efekt vyblednutí)
+    
+    // Vykreslíme konfetu
     ctx.beginPath();
     ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
     ctx.fillStyle = particle.color;
     ctx.fill();
 
-    // Remove the confetti if it's too small
+    // Pokud konfeta zmizí, odstraníme ji
     if (particle.size < 1) {
       confetti.splice(i, 1);
       i--;
@@ -78,55 +81,55 @@ function drawConfetti() {
   }
 }
 
-// Function to generate random confetti
+// Funkce pro generování náhodné konfety
 function generateConfetti() {
-  const confettiCount = 100; // Number of confetti particles
+  const confettiCount = 100; // Počet konfety
   for (let i = 0; i < confettiCount; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = Math.random() * 3 + 1;
     confetti.push({
-      x: 250, // Initial position in the center
+      x: 250, // Počáteční pozice na středu
       y: 250,
-      size: Math.random() * 5 + 5, // Size of the confetti
-      speedX: Math.cos(angle) * speed, // Speed in X direction
-      speedY: Math.sin(angle) * speed, // Speed in Y direction
-      color: `hsl(${Math.random() * 360}, 100%, 50%)` // Random color
+      size: Math.random() * 5 + 5, // Velikost konfety
+      speedX: Math.cos(angle) * speed, // Rychlost pohybu X
+      speedY: Math.sin(angle) * speed, // Rychlost pohybu Y
+      color: `hsl(${Math.random() * 360}, 100%, 50%)` // Náhodná barva
     });
   }
 }
 
-// Function to spin the wheel
+// Funkce pro roztočení kola
 function spinWheel() {
-  const duration = 4000; // Duration of the animation in milliseconds
+  const duration = 4000; // Délka animace v milisekundách
   const start = performance.now();
 
-  // Always want the result to be "Plavba" (index 2)
-  const targetSegmentIndex = 2; // Index of "Plavba"
-  const targetAngle = segAngle * targetSegmentIndex + segAngle / 2; // Target angle for "Plavba"
-  const totalRotation = 1440 + targetAngle; // 4 full rotations + correct angle for "Plavba"
+  // Chceme vždy výsledek "Plavba" (index 2)
+  const targetSegmentIndex = 2; // Index pro "Plavba"
+  const targetAngle = segAngle * targetSegmentIndex + segAngle / 2; // Cílový úhel pro "Plavba"
+  const totalRotation = 1440 + targetAngle; // 4 plné otočky + správný úhel pro "Plavba"
 
   function animate(now) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
-    const easeOut = 1 - Math.pow(1 - progress, 3); // Ease out for smooth slowing down
-    currentAngle = totalRotation * easeOut; // Animation with slowdown
-    drawRotatedWheel(currentAngle % 360); // Rotate the wheel
+    const easeOut = 1 - Math.pow(1 - progress, 3); // Plynulé zpomalení animace
+    currentAngle = totalRotation * easeOut; // Animace zpomalení
+    drawRotatedWheel(currentAngle % 360); // Rotace kola
 
     if (progress < 1) {
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animate); // Pokračuj v animaci
     } else {
-      result.textContent = "Výsledek: Plavba"; // Show the result after animation
-      generateConfetti(); // Generate confetti when animation ends
-      // Clear confetti after a few seconds
-      clearTimeout(confettiTimeout); // Ensure no previous timeout interferes
+      result.textContent = "Výsledek: Plavba"; // Zobrazíme výsledek
+      generateConfetti(); // Vytvoříme konfety po dokončení animace
+      // Po 3 sekundách vymažeme konfety
+      clearTimeout(confettiTimeout); // Ujistíme se, že žádný předchozí timeout nezasahuje
       confettiTimeout = setTimeout(() => {
-        confetti = []; // Clear confetti after 3 seconds
+        confetti = []; // Vymazání konfety
       }, 3000);
     }
   }
 
-  requestAnimationFrame(animate); // Start the animation
+  requestAnimationFrame(animate); // Začneme animaci
 }
 
-drawRotatedWheel(currentAngle); // Draw the initial state of the wheel
-spinBtn.addEventListener("click", spinWheel);
+drawRotatedWheel(currentAngle); // Vykreslíme počáteční stav kola
+spinBtn.addEventListener("click", spinWheel); 
