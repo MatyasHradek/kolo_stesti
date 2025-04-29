@@ -5,29 +5,31 @@ const spinBtn = document.getElementById("spin");
 
 const segments = ["NIC!!", "Výhra", "Plavba", "Prostě něco", "Výhra 2x", "Nejedeš na tábor", "Sleva 20%"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
-const segAngle = 360 / segments.length;
+const segAngle = 360 / segments.length; // Úhel pro každý segment
 
 let currentAngle = 0;
 
+// Funkce pro vykreslení kola štěstí
 function drawWheel() {
   for (let i = 0; i < segments.length; i++) {
-    const angle = segAngle * i * Math.PI / 180;
+    const angle = segAngle * i * Math.PI / 180; // Určíme úhel pro daný segment
     ctx.beginPath();
-    ctx.moveTo(250, 250);
-    ctx.arc(250, 250, 240, angle, angle + segAngle * Math.PI / 180);
-    ctx.fillStyle = colors[i];
+    ctx.moveTo(250, 250); // Začátek na středu
+    ctx.arc(250, 250, 240, angle, angle + segAngle * Math.PI / 180); // Vykreslíme segment
+    ctx.fillStyle = colors[i]; // Barva segmentu
     ctx.fill();
     ctx.save();
-    ctx.translate(250, 250);
-    ctx.rotate(angle + segAngle * Math.PI / 360);
+    ctx.translate(250, 250); // Přesun na střed
+    ctx.rotate(angle + segAngle * Math.PI / 360); // Rotace textu tak, aby byl správně zarovnán
     ctx.fillStyle = "black";
     ctx.font = "16px Arial";
     ctx.textAlign = "center";
-    ctx.fillText(segments[i], 150, 10);
+    ctx.fillText(segments[i], 150, 10); // Umístění textu v segmentu
     ctx.restore();
   }
 }
 
+// Funkce pro vykreslení pevnému ukazatele
 function drawFixedPointer() {
   ctx.beginPath();
   ctx.moveTo(250, 10);
@@ -38,42 +40,44 @@ function drawFixedPointer() {
   ctx.fill();
 }
 
+// Funkce pro vykreslení rotujícího kola
 function drawRotatedWheel(angle) {
-  ctx.clearRect(0, 0, 500, 500);
+  ctx.clearRect(0, 0, 500, 500); // Vyčistíme canvas
   ctx.save();
-  ctx.translate(250, 250);
-  ctx.rotate(angle * Math.PI / 180);
+  ctx.translate(250, 250); // Přesun na střed
+  ctx.rotate(angle * Math.PI / 180); // Rotace kola
   ctx.translate(-250, -250);
-  drawWheel();
+  drawWheel(); // Vykreslení kola
   ctx.restore();
-  drawFixedPointer();
+  drawFixedPointer(); // Vykreslení ukazatele
 }
 
+// Funkce pro roztočení kola
 function spinWheel() {
   const duration = 4000; // Délka animace v milisekundách
   const start = performance.now();
 
-  // Vždy chceme, aby výsledek byl "Plavba" (index 5)
-  const targetSegmentIndex = 0; // Index segmentu "Plavba"
-const targetAngle = segAngle * targetSegmentIndex + segAngle / 2; // Cílový úhel pro "Plavba"
-const totalRotation = 1440 + targetAngle;
+  // Vždy chceme, aby výsledek byl "Plavba" (index 2)
+  const targetSegmentIndex = 2; // Index segmentu "Plavba"
+  const targetAngle = segAngle * targetSegmentIndex + segAngle / 2; // Cílový úhel pro "Plavba"
+  const totalRotation = 1440 + targetAngle; // 4 otočky + správný úhel k segmentu "Plavba"
 
   function animate(now) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
-    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const easeOut = 1 - Math.pow(1 - progress, 3); // Plynulé zpomalení animace
     currentAngle = totalRotation * easeOut; // Animace zpomalení
-    drawRotatedWheel(currentAngle % 360);
+    drawRotatedWheel(currentAngle % 360); // Rotace kola
 
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
-      result.textContent = "Výsledek: Plavba"; // Po dokončení animace zobrazíme "Plavba"
+      result.textContent = "Výsledek: Plavba"; // Po dokončení animace zobrazíme výsledek
     }
   }
 
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animate); // Začátek animace
 }
 
-drawRotatedWheel(currentAngle);
-spinBtn.addEventListener("click", spinWheel);
+drawRotatedWheel(currentAngle); // Vykreslíme počáteční stav kola
+spinBtn.addEventListener("click", spinWheel); // Při kliknutí spustíme animaci
