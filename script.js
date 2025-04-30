@@ -3,6 +3,10 @@ const ctx = canvas.getContext("2d");
 const result = document.getElementById("result");
 const spinBtn = document.getElementById("spin");
 
+// 🖼️ Načtení obrázku pozadí
+const backgroundImage = new Image();
+backgroundImage.src = "Dobrodruzi na cestě k dobrodružství.png";
+
 const segments = ["NIC!!", "Pytel cementu", "Plavba", "Prostě něco", "Matfyz je super", "Nejedeš na tábor", "vstupní bonus 300"];
 const colors = ["#FF6347", "#FFD700", "#ADFF2F", "#00CED1", "#FF69B4", "#9370DB", "#32CD32"];
 const segAngle = 360 / segments.length;
@@ -45,14 +49,21 @@ function drawFixedPointer() {
 // Kreslení rotovaného kola
 function drawRotatedWheel(angle) {
   ctx.clearRect(0, 0, 500, 500);
+
+  // 💡 Pozadí (obrázek)
+  if (backgroundImage.complete) {
+    ctx.drawImage(backgroundImage, 0, 0, 500, 500);
+  }
+
   ctx.save();
   ctx.translate(250, 250);
   ctx.rotate(angle * Math.PI / 180);
   ctx.translate(-250, -250);
   drawWheel();
   ctx.restore();
+
   drawFixedPointer();
-  drawConfetti(); // NEZAPOMEŇ kreslit konfety při každém snímku
+  drawConfetti();
 }
 
 // Generování konfety
@@ -94,7 +105,7 @@ function drawConfetti() {
 
 // Animace konfety (smyčka)
 function animateConfetti() {
-  drawRotatedWheel(currentAngle % 360); // přepočítáme úhel a překreslíme
+  drawRotatedWheel(currentAngle % 360);
   if (confetti.length > 0) {
     requestAnimationFrame(animateConfetti);
   }
@@ -133,5 +144,9 @@ function spinWheel() {
   requestAnimationFrame(animate);
 }
 
-drawRotatedWheel(currentAngle);
+// Když je obrázek načtený, nakresli první stav
+backgroundImage.onload = () => {
+  drawRotatedWheel(currentAngle);
+};
+
 spinBtn.addEventListener("click", spinWheel);
