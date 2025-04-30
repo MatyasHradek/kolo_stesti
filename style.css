@@ -1,36 +1,57 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
+  margin: 0;
+  padding: 0;
+  background-image: url("Dobrodruzi na cestě k dobrodružství.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  backdrop-filter: blur(0px); /* můžeš přidat rozmazání pozadí, pokud chceš */
 }
 
 h1 {
-  color: #333;
+  color: #fff; /* světlejší text, lépe viditelný na obrázku */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .wheel-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px; /* mezera mezi kolem a obrázkem */
+  gap: 30px;
   flex-wrap: wrap;
+  padding-top: 30px;
 }
 
 canvas {
   border-radius: 50%;
   border: 5px solid #000;
+  background-color: rgba(255, 255, 255, 0.9); /* bílé pozadí pro čitelnost */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);     /* jemný stín pro lepší kontrast */
 }
 
 button {
   display: block;
-  margin-top: 20px;
+  margin: 20px auto 0;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  background-color: #ffffffcc;
+  border: 2px solid #333;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #eee;
 }
 
 p {
   font-size: 18px;
   font-weight: bold;
   margin-top: 20px;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
-
